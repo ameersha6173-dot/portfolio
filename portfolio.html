@@ -1,0 +1,1708 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ameersha S — Digital Marketing & WordPress Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Outfit:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg: #060a12;
+            --surface: #0d1421;
+            --surface2: #111827;
+            --border: rgba(255, 255, 255, 0.07);
+            --accent: #00d4aa;
+            --accent2: #7c6ef0;
+            --amber: #f5a623;
+            --text: #e8eaf0;
+            --muted: #6b7585;
+            --muted2: #9aa3b2;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            max-width: 100vw;
+            overflow-x: hidden;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 212, 170, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: left 0.15s ease, top 0.15s ease;
+            z-index: 0;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 6%;
+            background: rgba(6, 10, 18, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+            transition: padding 0.3s;
+        }
+
+        nav.scrolled {
+            padding: 0.85rem 6%;
+        }
+
+        .nav-logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 100%;
+            height: 1px;
+            background: var(--accent);
+            transition: right 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            right: 0;
+        }
+
+        .nav-cta {
+            padding: 0.6rem 1.4rem;
+            background: var(--accent);
+            color: #060a12;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 212, 170, 0.3);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            z-index: 101;
+            padding: 0.3rem;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .cursor-glow {
+                display: none;
+            }
+        }
+
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 120px 6% 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid-bg {
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(rgba(0, 212, 170, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 212, 170, 0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+        }
+
+        .hero-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: blobFloat 8s ease-in-out infinite;
+        }
+
+        .blob1 {
+            width: 500px;
+            height: 500px;
+            background: rgba(0, 212, 170, 0.08);
+            top: -100px;
+            right: -100px;
+        }
+
+        .blob2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(124, 110, 240, 0.08);
+            bottom: -100px;
+            left: 10%;
+            animation-delay: 3s;
+        }
+
+        @keyframes blobFloat {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(20px, -20px) scale(1.05);
+            }
+
+            66% {
+                transform: translate(-10px, 15px) scale(0.97);
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 760px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 212, 170, 0.1);
+            border: 1px solid rgba(0, 212, 170, 0.25);
+            padding: 0.45rem 1.1rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: slideDown 0.7s 0.2s forwards;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(0.8);
+            }
+        }
+
+        .hero-name {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(3.5rem, 8vw, 6.5rem);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: slideUp 0.8s 0.4s forwards;
+        }
+
+        .hero-name .line2 {
+            display: block;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            line-height: 1.75;
+            color: var(--muted2);
+            font-weight: 300;
+            max-width: 540px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: slideUp 0.8s 0.6s forwards;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: slideUp 0.8s 0.8s forwards;
+        }
+
+        .btn-main {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2.2rem;
+            background: var(--accent);
+            color: #060a12;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            border-radius: 100px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(0, 212, 170, 0.35);
+        }
+
+        .btn-ghost {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2.2rem;
+            border: 1px solid var(--border);
+            color: var(--muted2);
+            font-size: 0.9rem;
+            text-decoration: none;
+            border-radius: 100px;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .hero-stats {
+            position: absolute;
+            right: 6%;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            z-index: 2;
+            opacity: 0;
+            animation: slideLeft 0.8s 1s forwards;
+        }
+
+        .stat-item {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            text-align: center;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .stat-item:hover {
+            border-color: rgba(0, 212, 170, 0.4);
+            transform: translateX(-4px);
+        }
+
+        .stat-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--accent);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-label {
+            font-size: 0.72rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            animation: bounceY 2s infinite;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--muted), transparent);
+        }
+
+        @keyframes bounceY {
+
+            0%,
+            100% {
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                transform: translateX(-50%) translateY(6px);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideLeft {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        section {
+            padding: 8rem 6%;
+            position: relative;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.72rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .section-tag::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title .grad {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        #about {
+            background: var(--surface);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--muted2);
+            font-weight: 300;
+            margin-bottom: 1.2rem;
+        }
+
+        .about-text strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .cert-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 2rem;
+        }
+
+        .cert-pill {
+            font-size: 0.72rem;
+            letter-spacing: 0.06em;
+            padding: 0.4rem 1rem;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            color: var(--muted2);
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .cert-pill:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .skills-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .skill-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .skill-row-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+        }
+
+        .skill-row-top span:first-child {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .skill-row-top span:last-child {
+            color: var(--accent);
+            font-size: 0.75rem;
+        }
+
+        .skill-bar {
+            height: 4px;
+            background: var(--surface2);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            border-radius: 100px;
+            width: 0;
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #experience {
+            background: var(--bg);
+        }
+
+        .exp-timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .exp-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+        }
+
+        .exp-item {
+            position: relative;
+            padding: 0 0 3.5rem 2.5rem;
+        }
+
+        .exp-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 8px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--accent);
+            transition: background 0.3s;
+        }
+
+        .exp-item:hover::before {
+            background: var(--accent);
+        }
+
+        .exp-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .exp-card:hover {
+            border-color: rgba(0, 212, 170, 0.3);
+            transform: translateX(4px);
+        }
+
+        .exp-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.8rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .exp-role {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .exp-period {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.9rem;
+            border-radius: 100px;
+            background: rgba(0, 212, 170, 0.1);
+            color: var(--accent);
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        .exp-company {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            letter-spacing: 0.04em;
+        }
+
+        .exp-bullets {
+            list-style: none;
+        }
+
+        .exp-bullets li {
+            font-size: 0.88rem;
+            color: var(--muted2);
+            line-height: 1.6;
+            padding: 0.25rem 0 0.25rem 1.2rem;
+            position: relative;
+        }
+
+        .exp-bullets li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.7rem;
+            top: 0.35rem;
+        }
+
+        #projects {
+            background: var(--surface);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 212, 170, 0.07), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .project-card:hover {
+            border-color: rgba(0, 212, 170, 0.35);
+            transform: translateY(-6px);
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card.purple-accent::before {
+            background: radial-gradient(circle at 50% 0%, rgba(124, 110, 240, 0.1), transparent 60%);
+        }
+
+        .project-card.purple-accent:hover {
+            border-color: rgba(124, 110, 240, 0.4);
+        }
+
+        .project-card.amber-accent::before {
+            background: radial-gradient(circle at 50% 0%, rgba(245, 166, 35, 0.08), transparent 60%);
+        }
+
+        .project-card.amber-accent:hover {
+            border-color: rgba(245, 166, 35, 0.4);
+        }
+
+        .p-tag {
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+        }
+
+        .project-card.purple-accent .p-tag {
+            color: var(--accent2);
+        }
+
+        .project-card.amber-accent .p-tag {
+            color: var(--amber);
+        }
+
+        .p-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            line-height: 1.2;
+        }
+
+        .p-desc {
+            font-size: 0.86rem;
+            color: var(--muted2);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .p-tools {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .p-tool {
+            font-size: 0.68rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            letter-spacing: 0.04em;
+        }
+
+        .p-link {
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: gap 0.2s;
+        }
+
+        .p-link:hover {
+            gap: 0.7rem;
+        }
+
+        .project-card.purple-accent .p-link {
+            color: var(--accent2);
+        }
+
+        .project-card.amber-accent .p-link {
+            color: var(--amber);
+        }
+
+        .p-result {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(245, 166, 35, 0.1);
+            border: 1px solid rgba(245, 166, 35, 0.2);
+            padding: 0.6rem 1rem;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            color: var(--amber);
+            font-weight: 500;
+        }
+
+        #skills {
+            background: var(--bg);
+        }
+
+        .skills-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .skill-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem;
+            transition: border-color 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .skill-card:hover {
+            border-color: rgba(0, 212, 170, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .skill-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .sk-icon {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+        }
+
+        .sk-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+
+        .sk-desc {
+            font-size: 0.84rem;
+            color: var(--muted2);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        #contact {
+            background: var(--surface);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        .contact-info p {
+            font-size: 0.95rem;
+            color: var(--muted2);
+            line-height: 1.75;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .contact-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.1rem 1.4rem;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            text-decoration: none;
+            color: var(--text);
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .contact-item:hover {
+            border-color: rgba(0, 212, 170, 0.4);
+            transform: translateX(4px);
+        }
+
+        .ci-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(0, 212, 170, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .ci-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ci-label {
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 0.1rem;
+        }
+
+        .ci-val {
+            font-size: 0.88rem;
+        }
+
+        .contact-form {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+        }
+
+        .contact-form h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1.8rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem 1.1rem;
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            resize: none;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--muted);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: rgba(0, 212, 170, 0.5);
+            box-shadow: 0 0 0 3px rgba(0, 212, 170, 0.08);
+        }
+
+        .form-group select option {
+            background: var(--surface2);
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent), #00b891);
+            border: none;
+            border-radius: 100px;
+            color: #060a12;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(0, 212, 170, 0.35);
+        }
+
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .form-success .check {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-success h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.6rem;
+            color: var(--accent);
+        }
+
+        .form-success p {
+            font-size: 0.9rem;
+            color: var(--muted2);
+        }
+
+        footer {
+            background: var(--bg);
+            border-top: 1px solid var(--border);
+            padding: 2rem 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.78rem;
+            color: var(--muted);
+        }
+
+        footer a {
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 960px) {
+            #hero {
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+                padding-top: 150px;
+                gap: 4rem;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero-stats {
+                position: relative;
+                right: auto;
+                top: auto;
+                transform: none;
+                flex-direction: row;
+                flex-wrap: wrap;
+                width: 100%;
+                gap: 1rem;
+                animation: slideUp 0.8s 1s forwards;
+            }
+
+            .stat-item {
+                flex: 1 1 calc(50% - 1rem);
+                padding: 1.2rem;
+            }
+
+            .about-grid,
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(6, 10, 18, 0.98);
+                backdrop-filter: blur(16px);
+                flex-direction: column;
+                padding: 2rem 5%;
+                gap: 1.5rem;
+                border-bottom: 1px solid var(--border);
+                clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                transition: clip-path 0.4s ease, opacity 0.4s ease;
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .nav-links.open {
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(7px) rotate(45deg);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-7px) rotate(-45deg);
+            }
+
+            section {
+                padding: 6rem 6%;
+            }
+
+            .hero-name {
+                font-size: clamp(2.8rem, 10vw, 4rem);
+                margin-top: 1rem;
+            }
+
+            .hero-desc {
+                font-size: 1rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 1rem;
+            }
+
+            .btn-main,
+            .btn-ghost {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .exp-item {
+                padding: 0 0 2.5rem 1.5rem;
+            }
+
+            .exp-item::before {
+                left: -1.75rem;
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-cta {
+                display: none;
+            }
+
+            #hero {
+                padding: 130px 5% 4rem;
+            }
+
+            .hero-name {
+                font-size: clamp(2rem, 10vw, 2.8rem);
+            }
+
+            .hero-badge {
+                margin-bottom: 1.5rem;
+                font-size: 0.65rem;
+                padding: 0.35rem 0.8rem;
+            }
+
+            section {
+                padding: 4.5rem 5%;
+                overflow-x: hidden;
+                /* extra safety for section animations */
+            }
+
+            .contact-form {
+                padding: 1.5rem;
+            }
+
+            .projects-grid,
+            .skills-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-item {
+                flex: 1 1 100%;
+                padding: 1rem;
+            }
+
+            .exp-card {
+                padding: 1.5rem;
+            }
+
+            footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+                padding: 2rem 5%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cursor-glow" id="glow"></div>
+
+    <nav id="navbar">
+        <a href="#hero" class="nav-logo">Ameersha<span>.</span></a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="#contact" class="nav-cta">Hire Me</a>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-grid-bg"></div>
+        <div class="hero-blob blob1"></div>
+        <div class="hero-blob blob2"></div>
+        <div class="hero-content">
+            <div class="hero-badge"><span class="badge-dot"></span>Available for new opportunities</div>
+            <h1 class="hero-name">Digital<br><span class="line2">Marketer.</span></h1>
+            <p class="hero-desc">I'm <strong style="color:var(--text);font-weight:500;">Ameersha S</strong> — a
+                results-driven Digital Marketing Manager specialising in SEO, WordPress development, Meta Ads, and
+                social media strategy. Helping brands grow online since 2024.</p>
+            <div class="hero-actions">
+                <a href="#projects" class="btn-main">View My Work ↓</a>
+                <a href="#contact" class="btn-ghost">Let's Talk →</a>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-num">229%</div>
+                <div class="stat-label">Traffic Growth</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">4+</div>
+                <div class="stat-label">Roles Held</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">3+</div>
+                <div class="stat-label">Sites Built</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">4×</div>
+                <div class="stat-label">Certifications</div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>Scroll
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="about-grid">
+            <div class="reveal-left">
+                <p class="section-tag">About Me</p>
+                <h2 class="section-title">Strategy meets <span class="grad">creativity.</span></h2>
+                <br>
+                <div class="about-text">
+                    <p>I'm a <strong>Digital Marketing Manager</strong> based in Dubai with hands-on experience across
+                        WordPress development, SEO, Meta advertising, content strategy, and social media management.</p>
+                    <p>From launching full websites to running high-ROI ad campaigns and achieving <strong>top-3 Google
+                            rankings</strong>, I bridge creative execution with data-driven results.</p>
+                    <p>Currently working with <strong>Realist Broker Dubai</strong> while taking on select freelance
+                        projects across the UAE and India.</p>
+                </div>
+                <div class="cert-row">
+                    <span class="cert-pill">HubSpot Inbound Marketing</span>
+                    <span class="cert-pill">Google Ads Search</span>
+                    <span class="cert-pill">Google Ads Display</span>
+                    <span class="cert-pill">Google Ads Video</span>
+                </div>
+            </div>
+            <div class="skills-visual reveal-right">
+                <div class="skill-row">
+                    <div class="skill-row-top"><span>WordPress & Elementor</span><span>95%</span></div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="95"></div>
+                    </div>
+                </div>
+                <div class="skill-row">
+                    <div class="skill-row-top"><span>Search Engine Optimisation</span><span>88%</span></div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="88"></div>
+                    </div>
+                </div>
+                <div class="skill-row">
+                    <div class="skill-row-top"><span>Social Media Marketing</span><span>90%</span></div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="90"></div>
+                    </div>
+                </div>
+                <div class="skill-row">
+                    <div class="skill-row-top"><span>Meta & Google Ads</span><span>82%</span></div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="82"></div>
+                    </div>
+                </div>
+                <div class="skill-row">
+                    <div class="skill-row-top"><span>Google Analytics</span><span>85%</span></div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="85"></div>
+                    </div>
+                </div>
+                <div class="skill-row">
+                    <div class="skill-row-top"><span>Canva Design</span><span>92%</span></div>
+                    <div class="skill-bar">
+                        <div class="skill-fill" data-width="92"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <p class="section-tag reveal">Experience</p>
+        <h2 class="section-title reveal">Where I've <span class="grad">made impact.</span></h2>
+        <br><br>
+        <div class="exp-timeline">
+            <div class="exp-item reveal">
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <h3 class="exp-role">Social Media Manager & Website Developer</h3><span class="exp-period">Aug
+                            2024 – Present</span>
+                    </div>
+                    <p class="exp-company">Realist Broker Dubai</p>
+                    <ul class="exp-bullets">
+                        <li>Developing and maintaining the company's website using WordPress</li>
+                        <li>Managing website updates, performance optimisation, backups & plugin security</li>
+                        <li>Collaborating with design teams for social media content creation</li>
+                        <li>Planning and executing digital marketing strategies for brand awareness</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="exp-item reveal">
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <h3 class="exp-role">Freelance Website Manager & Developer</h3><span class="exp-period">Dec 2024
+                            – Sept 2025</span>
+                    </div>
+                    <p class="exp-company">Red Desert Dubai</p>
+                    <ul class="exp-bullets">
+                        <li>Designed, developed and maintained full tourism website on WordPress</li>
+                        <li>Maintained plugins, CMS updates, backups & security protocols</li>
+                        <li>Collaborated with internal teams for content and product listings</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="exp-item reveal">
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <h3 class="exp-role">Digital Marketing Executive</h3><span class="exp-period">Apr 2025 – Jul
+                            2025</span>
+                    </div>
+                    <p class="exp-company">Oliviya Developers, Kochi</p>
+                    <ul class="exp-bullets">
+                        <li>Designed and developed a responsive, SEO-friendly website aligned with brand identity</li>
+                        <li>Developed content calendars, visual themes & hashtag strategies</li>
+                        <li>Created and scheduled engaging content across Instagram & Facebook</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="exp-item reveal">
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <h3 class="exp-role">Digital Marketing Executive</h3><span class="exp-period">Sept 2024 – Apr
+                            2025</span>
+                    </div>
+                    <p class="exp-company">Hilton Fitness Systems, Kochi</p>
+                    <ul class="exp-bullets">
+                        <li>Managed Meta ad campaigns for lead generation and ROI optimisation</li>
+                        <li>Conducted competitor research and implemented SEO tactics</li>
+                        <li>Collaborated with creative teams to align campaigns with seasonal offers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <p class="section-tag reveal">Projects</p>
+        <h2 class="section-title reveal">Work that <span class="grad">delivers.</span></h2>
+        <br><br>
+        <div class="projects-grid">
+            <div class="project-card reveal">
+                <p class="p-tag">WordPress · Tourism</p>
+                <h3 class="p-title">Red Desert Dubai</h3>
+                <p class="p-desc">Responsive tourism website for desert safari services. Integrated booking forms,
+                    WhatsApp chat, and basic SEO. Tracked performance via Google Analytics.</p>
+                <div class="p-tools"><span class="p-tool">WordPress</span><span class="p-tool">Elementor</span><span
+                        class="p-tool">Yoast SEO</span><span class="p-tool">WooCommerce</span><span
+                        class="p-tool">cPanel</span></div>
+                <a href="https://www.dubaireddesert.com" target="_blank" class="p-link">View Live Site ↗</a>
+            </div>
+            <div class="project-card purple-accent reveal">
+                <p class="p-tag">WordPress · Real Estate</p>
+                <h3 class="p-title">Oliviya Developers</h3>
+                <p class="p-desc">Professional website for a construction firm, showcasing ongoing projects, company
+                    profile, and lead generation inquiry forms. Mobile-first UI/UX.</p>
+                <div class="p-tools"><span class="p-tool">WordPress</span><span class="p-tool">Elementor</span><span
+                        class="p-tool">Google Analytics</span></div>
+                <a href="https://www.oliviyadevelopers.com" target="_blank" class="p-link">View Live Site ↗</a>
+            </div>
+            <div class="project-card amber-accent reveal">
+                <p class="p-tag">SEO · Fitness</p>
+                <h3 class="p-title">Hilton Fitness Systems</h3>
+                <p class="p-desc">End-to-end SEO strategy for Kerala's fitness equipment market. Top-3 rankings for all
+                    target keywords achieved in 3 months.</p>
+                <div class="p-tools"><span class="p-tool">On-Page SEO</span><span class="p-tool">Technical
+                        SEO</span><span class="p-tool">Keyword Research</span><span class="p-tool">GSC</span></div>
+                <br>
+                <div class="p-result">📈 229% increase in organic traffic</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <p class="section-tag reveal">Skills</p>
+        <h2 class="section-title reveal">What I <span class="grad">bring.</span></h2>
+        <br><br>
+        <div class="skills-cards">
+            <div class="skill-card reveal">
+                <div class="sk-icon">🎯</div>
+                <h3 class="sk-title">SEO & Content Strategy</h3>
+                <p class="sk-desc">On-page & technical SEO, keyword research, meta optimisation, internal linking, and
+                    content strategy to drive organic growth.</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="sk-icon">🌐</div>
+                <h3 class="sk-title">WordPress Development</h3>
+                <p class="sk-desc">Full website design using WordPress, Elementor, Yoast SEO, WooCommerce, cPanel, and
+                    plugin/security management.</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="sk-icon">📣</div>
+                <h3 class="sk-title">Social Media Marketing</h3>
+                <p class="sk-desc">Content calendars, visual themes, hashtag strategies, and engaging posts across
+                    Instagram and Facebook.</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="sk-icon">📊</div>
+                <h3 class="sk-title">Meta & Google Ads</h3>
+                <p class="sk-desc">Paid campaigns for lead generation and product promotions with a focus on ROI
+                    optimisation and competitor analysis.</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="sk-icon">📈</div>
+                <h3 class="sk-title">Analytics & Reporting</h3>
+                <p class="sk-desc">Google Analytics setup, user behaviour tracking, traffic analysis, and data-driven
+                    campaign decisions.</p>
+            </div>
+            <div class="skill-card reveal">
+                <div class="sk-icon">🎨</div>
+                <h3 class="sk-title">Design & Canva</h3>
+                <p class="sk-desc">Creating branded social media graphics, promotional banners, and visual content
+                    aligned with brand identity.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-grid">
+            <div class="reveal-left">
+                <p class="section-tag">Get In Touch</p>
+                <h2 class="section-title">Let's work <span class="grad">together.</span></h2>
+                <br>
+                <div class="contact-info">
+                    <p>Open to freelance projects, full-time roles, and collaborations in digital marketing and
+                        WordPress development.</p>
+                    <div class="contact-items">
+                        <a href="mailto:ameersha6173@gmail.com" class="contact-item">
+                            <div class="ci-icon">✉️</div>
+                            <div class="ci-text"><span class="ci-label">Email</span><span
+                                    class="ci-val">ameersha6173@gmail.com</span></div>
+                        </a>
+                        <a href="tel:+917025836173" class="contact-item">
+                            <div class="ci-icon">📞</div>
+                            <div class="ci-text"><span class="ci-label">Phone</span><span class="ci-val">+91 70258
+                                    36173</span></div>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="contact-item">
+                            <div class="ci-icon">💼</div>
+                            <div class="ci-text"><span class="ci-label">LinkedIn</span><span class="ci-val">View Profile
+                                    →</span></div>
+                        </a>
+                        <div class="contact-item" style="cursor:default;">
+                            <div class="ci-icon">📍</div>
+                            <div class="ci-text"><span class="ci-label">Location</span><span class="ci-val">Dubai, UAE /
+                                    Kerala, India</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form reveal-right">
+                <h3>Send a Message</h3>
+                <div id="formFields">
+                    <div class="form-row">
+                        <div class="form-group"><label>Your Name</label><input type="text" id="f-name"
+                                placeholder="John Doe"></div>
+                        <div class="form-group"><label>Email Address</label><input type="email" id="f-email"
+                                placeholder="john@example.com"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Service Needed</label>
+                        <select id="f-service">
+                            <option value="">Select a service...</option>
+                            <option>WordPress Website Development</option>
+                            <option>SEO Optimisation</option>
+                            <option>Social Media Marketing</option>
+                            <option>Meta / Google Ads</option>
+                            <option>Full Digital Marketing</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Budget Range</label>
+                        <select id="f-budget">
+                            <option value="">Select budget...</option>
+                            <option>Under $500</option>
+                            <option>$500 – $1,000</option>
+                            <option>$1,000 – $3,000</option>
+                            <option>$3,000+</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Message</label><textarea id="f-message" rows="4"
+                            placeholder="Tell me about your project..."></textarea></div>
+                    <button class="form-submit" onclick="submitForm()">Send Message ✦</button>
+                </div>
+                <div class="form-success" id="formSuccess">
+                    <div class="check">✅</div>
+                    <h4>Message Sent!</h4>
+                    <p>Thanks for reaching out. I'll get back to you within 24 hours.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <span>© 2025 Ameersha S · Digital Marketing Manager</span>
+        <span>Built with HTML · Deployed on <a href="https://vercel.com" target="_blank">Vercel</a></span>
+    </footer>
+
+    <script>
+        const glow = document.getElementById('glow');
+        document.addEventListener('mousemove', e => { glow.style.left = e.clientX + 'px'; glow.style.top = e.clientY + 'px'; });
+
+        window.addEventListener('scroll', () => { document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50); });
+
+        const revealObs = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 100); revealObs.unobserve(e.target); } });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => revealObs.observe(el));
+
+        const barObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.querySelectorAll('.skill-fill').forEach(b => { b.style.width = b.dataset.width + '%'; }); barObs.unobserve(e.target); } });
+        }, { threshold: 0.3 });
+        const sv = document.querySelector('.skills-visual');
+        if (sv) barObs.observe(sv);
+
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        function submitForm() {
+            const n = document.getElementById('f-name').value.trim();
+            const e = document.getElementById('f-email').value.trim();
+            const m = document.getElementById('f-message').value.trim();
+            if (!n || !e || !m) { alert('Please fill in your name, email, and message.'); return; }
+            document.getElementById('formFields').style.display = 'none';
+            document.getElementById('formSuccess').style.display = 'block';
+        }
+    </script>
+</body>
+
+</html>
