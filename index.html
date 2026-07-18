@@ -735,11 +735,9 @@
 
 <script>
 (function(){
-  const API_KEY = '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';
-  const API_URL = 'https://integrate.api.nvidia.com/v1/chat/completions';
-  const MODEL   = 'meta/llama-3.1-8b-instruct';
+  const API_URL = '/api/chat';
 
-  const SYSTEM_PROMPT = `You are a friendly, professional AI assistant on Ameersha S's digital marketing portfolio website. Answer questions about Ameersha's work, skills, and services. Be concise (2-4 sentences max). If asked about something unrelated to Ameersha's work, politely redirect.
+  const SYSTEM_PROMPT = `You are a friendly, professional AI assistant on Ameersha S's digital marketing portfolio website. Answer questions about Ameersha's work, skills, and services. Be concise (2-4 sentences max). Ameersha is MALE — always use he/him/his pronouns when referring to him. If asked about something unrelated to Ameersha's work, politely redirect.
 
 ABOUT AMEERSHA S:
 - Digital Marketing Manager based in Kerala, India
@@ -814,7 +812,7 @@ HOW TO HIRE: Contact via email ameersha6173@gmail.com, WhatsApp +91 7356516173, 
   function greet() {
     if (opened) return;
     opened = true;
-    setTimeout(() => addMsg("👋 Hi! I'm Ameersha's AI assistant. I can tell you about her services, past work, results, and how to get in touch. What would you like to know?", 'bot'), 350);
+    setTimeout(() => addMsg("👋 Hi! I'm Ameersha's AI assistant. I can tell you about his services, past work, results, and how to get in touch. What would you like to know?", 'bot'), 350);
   }
 
   async function ask(userText) {
@@ -827,13 +825,9 @@ HOW TO HIRE: Contact via email ameersha6173@gmail.com, WhatsApp +91 7356516173, 
     try {
       const res = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + API_KEY },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: MODEL,
-          messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history],
-          max_tokens: 300,
-          temperature: 0.6,
-          stream: false
+          messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...history]
         })
       });
 
