@@ -343,6 +343,46 @@
     .chat-btn { bottom: 18px; left: 18px; width: 50px; height: 50px; }
     .chat-btn-tooltip { display: none; }
   }
+
+  /* ===== CONTACT: base hardening ===== */
+  .contact-grid > * { min-width: 0; }
+  .contact-items, .contact-item, .ci-text, .contact-form, .form-row, .form-group { min-width: 0; }
+  .contact-item { max-width: 100%; }
+  .ci-text { flex: 1 1 auto; }
+  .ci-val { overflow-wrap: anywhere; word-break: break-word; }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; max-width: 100%; min-width: 0; }
+  .form-group select { appearance: none; -webkit-appearance: none; padding-right: 2.4rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231a6b7c' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 1rem center; text-overflow: ellipsis; }
+  .form-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+  .form-error { color: #b3261e; font-size: 0.82rem; font-weight: 700; margin-top: 0.8rem; min-height: 1.2em; }
+  section { scroll-margin-top: 64px; }
+
+  /* ===== CONTACT: mobile ===== */
+  @media (max-width: 860px) {
+    .contact-grid { grid-template-columns: minmax(0, 1fr); gap: 2.2rem; }
+    #contact .reveal-left, #contact .reveal-right { transform: translateY(30px); }
+    #contact .reveal-left.visible, #contact .reveal-right.visible { transform: translateY(0); }
+    #contact .section-title { margin-bottom: 1.4rem; }
+    .contact-info p { margin-bottom: 1.4rem; }
+    #contact { padding-bottom: 7rem; }
+  }
+  @media (max-width: 640px) {
+    .contact-items { gap: 0.7rem; }
+    .contact-item { padding: 0.85rem 1rem; gap: 0.8rem; min-height: 60px; }
+    .ci-icon { width: 36px; height: 36px; }
+    .ci-val { font-size: 0.86rem; }
+    .contact-form { padding: 1.5rem 1.2rem; border-radius: 16px; }
+    .contact-form h3 { font-size: 1.1rem; margin-bottom: 1.2rem; }
+    .form-row { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group input, .form-group select, .form-group textarea { font-size: 16px; padding: 0.85rem 0.95rem; min-height: 48px; }
+    .form-group textarea { min-height: 110px; }
+    .form-submit { min-height: 50px; font-size: 0.95rem; }
+    #contact { padding-bottom: 8rem; }
+  }
+  @media (hover: none) {
+    .contact-item:hover { transform: none; background: rgba(255,255,255,0.1); }
+    .contact-item:hover .ci-icon { transform: none; }
+  }
 </style>
 </head>
 <body>
@@ -614,12 +654,12 @@
       <h3>Send a Message</h3>
       <div id="formFields">
         <div class="form-row">
-          <div class="form-group"><label>Your Name</label><input type="text" id="f-name" placeholder="John Doe"></div>
-          <div class="form-group"><label>Email Address</label><input type="email" id="f-email" placeholder="john@example.com"></div>
+          <div class="form-group"><label for="f-name">Your Name</label><input type="text" id="f-name" name="name" placeholder="John Doe" autocomplete="name" required></div>
+          <div class="form-group"><label for="f-email">Email Address</label><input type="email" id="f-email" name="email" placeholder="john@example.com" autocomplete="email" inputmode="email" required></div>
         </div>
         <div class="form-group">
-          <label>Service Needed</label>
-          <select id="f-service">
+          <label for="f-service">Service Needed</label>
+          <select id="f-service" name="service">
             <option value="">Select a service...</option>
             <option>WordPress Website Development</option>
             <option>SEO Optimisation</option>
@@ -630,8 +670,8 @@
           </select>
         </div>
         <div class="form-group">
-          <label>Budget Range</label>
-          <select id="f-budget">
+          <label for="f-budget">Budget Range</label>
+          <select id="f-budget" name="budget">
             <option value="">Select budget...</option>
             <option>Under $500</option>
             <option>$500 – $1,000</option>
@@ -639,8 +679,10 @@
             <option>$3,000+</option>
           </select>
         </div>
-        <div class="form-group"><label>Message</label><textarea id="f-message" rows="4" placeholder="Tell me about your project..."></textarea></div>
-        <button class="form-submit" onclick="submitForm()">Send Message →</button>
+        <div class="form-group"><label for="f-message">Message</label><textarea id="f-message" name="message" rows="4" placeholder="Tell me about your project..." required></textarea></div>
+        <input type="checkbox" id="f-botcheck" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+        <button type="button" class="form-submit" id="formSubmitBtn" onclick="submitForm()">Send Message →</button>
+        <p class="form-error" id="formError" role="alert"></p>
       </div>
       <div class="form-success" id="formSuccess">
         <div class="check2">✅</div>
@@ -703,13 +745,38 @@
     setTimeout(() => { document.querySelectorAll('.counter').forEach(animateCounter); }, 1300);
   });
 
-  function submitForm() {
-    const n = document.getElementById('f-name').value.trim();
-    const e = document.getElementById('f-email').value.trim();
-    const m = document.getElementById('f-message').value.trim();
-    if (!n || !e || !m) { alert('Please fill in your name, email, and message.'); return; }
-    document.getElementById('formFields').style.display = 'none';
-    document.getElementById('formSuccess').style.display = 'block';
+  async function submitForm() {
+    const btn = document.getElementById('formSubmitBtn');
+    const err = document.getElementById('formError');
+    const val = id => document.getElementById(id).value.trim();
+    err.textContent = '';
+    if (document.getElementById('f-botcheck').checked) return;
+    if (!val('f-name') || !val('f-email') || !val('f-message')) { err.textContent = 'Please fill in your name, email, and message.'; return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('f-email'))) { err.textContent = 'Please enter a valid email address.'; return; }
+    btn.disabled = true; btn.textContent = 'Sending…';
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          access_key: '7b66dd97-7049-47b2-916a-1198eb7de4f4',
+          subject: 'New portfolio enquiry from ' + val('f-name'),
+          from_name: 'Portfolio Contact Form',
+          name: val('f-name'),
+          email: val('f-email'),
+          service: val('f-service') || 'Not specified',
+          budget: val('f-budget') || 'Not specified',
+          message: val('f-message')
+        })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || 'Failed');
+      document.getElementById('formFields').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    } catch (e) {
+      err.textContent = 'Could not send right now. Please email ameersha6173@gmail.com or use WhatsApp.';
+      btn.disabled = false; btn.textContent = 'Send Message →';
+    }
   }
 
   const field = document.getElementById('particleField');
